@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/app/components/StatusBadge";
 import { Skeleton } from "@/app/components/Skeleton";
-import { ensureSeeded, getLocalAppointments, seedDemoAppointments } from "@/app/utils/demoData";
+import { ensureSeeded, getLocalAppointments, seedDemoAppointments, ensureQueueAppointments } from "@/app/utils/demoData";
 
 interface Appointment {
   id: number;
@@ -37,15 +37,16 @@ export default function QueueTable() {
         }
         const data = await res.json();
         const list = Array.isArray(data) ? data : [];
-        if (list.length === 0) {
+        const queueCount = list.filter(a => ["booked","waiting"].includes(String(a.status).toLowerCase())).length;
+        if (list.length === 0 || queueCount < 25) {
           ensureSeeded();
-          setAppointments(seedDemoAppointments(20));
+          setAppointments(ensureQueueAppointments(25));
         } else {
           setAppointments(list);
         }
       } catch (err: any) {
         ensureSeeded();
-        const local = getLocalAppointments();
+        const local = ensureQueueAppointments(25);
         if (local.length) {
           setAppointments(local);
         } else {
