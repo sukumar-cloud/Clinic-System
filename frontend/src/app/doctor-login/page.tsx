@@ -18,15 +18,27 @@ export default function DoctorLoginPage() {
     setError("");
     // TODO: Replace with real API call
     await new Promise(r => setTimeout(r, 800));
-    // Simulate login success for demo if username is 'doctor' and password is 'password'
-    if (username === "doctor" && password === "password") {
-      login("doctor");
-      setLoading(false);
-      router.push("/doctor/queue");
-      return;
+    // Call backend API for login
+    try {
+      const res = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (res.ok && data.access_token) {
+        localStorage.setItem("token", data.access_token);
+        login("doctor");
+        setLoading(false);
+        router.push("/doctor/queue");
+        return;
+      } else {
+        setError(data.message || "Invalid username or password");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
     }
     setLoading(false);
-    setError("Invalid username or password");
   }
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-white p-8">
