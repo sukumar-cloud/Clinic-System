@@ -4,7 +4,7 @@ import AppointmentTable from "./AppointmentTable";
 
 export default function FrontDeskAppointmentsPage() {
   return (
-    <ProtectedRoute allowedRole="frontdesk" redirectTo="/frontdesk-login">
+    <ProtectedRoute allowedRole="frontdesk" redirectTo="/">
       <DashboardHeader />
       <main className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 to-white p-0">
         <div className="w-full min-h-screen bg-white rounded-none shadow-none p-6 md:p-10">

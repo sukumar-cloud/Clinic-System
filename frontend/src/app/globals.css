@@ -37,3 +37,40 @@ body {
   display: none !important;
   visibility: hidden !important;
 }
+
+/* Component button styles */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-300 ease-out select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] shadow;
+  }
+  .btn-primary {
+    /* animated gradient that moves on hover */
+    background-image: linear-gradient(90deg, #2563eb, #7c3aed, #2563eb);
+    background-size: 200% 100%;
+    background-position: 0% 0%;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+  }
+  .btn-primary:hover {
+    background-position: 100% 0%;
+    box-shadow: 0 10px 24px rgba(124, 58, 237, 0.35);
+  }
+
+  .btn-outline {
+    @apply border;
+    border-color: #2563eb;
+    color: #2563eb;
+    background: white;
+  }
+  .btn-outline:hover {
+    background-image: linear-gradient(90deg, rgba(37,99,235,0.08), rgba(124,58,237,0.08));
+  }
+
+  .btn-danger {
+    background-image: linear-gradient(90deg, #ef4444, #f97316, #ef4444);
+    background-size: 200% 100%;
+    background-position: 0% 0%;
+    color: #fff;
+  }
+  .btn-danger:hover { background-position: 100% 0%; }
+}

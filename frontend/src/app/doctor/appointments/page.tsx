@@ -4,7 +4,7 @@ import AppointmentTable from "./AppointmentTable";
 
 export default function DoctorAppointmentsPage() {
   return (
-    <ProtectedRoute allowedRole="doctor" redirectTo="/doctor-login">
+    <ProtectedRoute allowedRole="doctor" redirectTo="/">
       <DashboardHeader />
       <main className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 to-white p-0">
         <div className="w-full min-h-screen bg-white rounded-none shadow-none p-6 md:p-10">

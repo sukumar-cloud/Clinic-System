@@ -5,7 +5,7 @@ import AvailableDoctors from "../components/AvailableDoctors";
 
 export default function FrontDeskQueuePage() {
   return (
-    <ProtectedRoute allowedRole="frontdesk" redirectTo="/frontdesk-login">
+    <ProtectedRoute allowedRole="frontdesk" redirectTo="/">
       <DashboardHeader />
       <main className="min-h-screen flex flex-col bg-gradient-to-br from-green-50 to-white p-0">
         <div className="w-full min-h-screen bg-white rounded-none shadow-none p-6 md:p-10">
