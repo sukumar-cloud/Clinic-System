@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function DoctorLoginPage() {
   const [username, setUsername] = useState("");
@@ -7,13 +9,22 @@ export default function DoctorLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const { login } = useAuth();
+  const router = useRouter();
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
     // TODO: Replace with real API call
     await new Promise(r => setTimeout(r, 800));
-    // Simulate login fail for now
+    // Simulate login success for demo if username is 'doctor' and password is 'password'
+    if (username === "doctor" && password === "password") {
+      login("doctor");
+      setLoading(false);
+      router.push("/doctor/queue");
+      return;
+    }
     setLoading(false);
     setError("Invalid username or password");
   }
