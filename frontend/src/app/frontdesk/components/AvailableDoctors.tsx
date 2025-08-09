@@ -21,7 +21,7 @@ export default function AvailableDoctors() {
         if (!res.ok) throw new Error("Failed to fetch doctors");
         const data = await res.json();
         const list = Array.isArray(data) ? data : [];
-        if (list.length === 0) {
+        if (list.length < 20) {
           ensureSeeded();
           setDoctors(seedDemoDoctors(20));
         } else {

@@ -44,7 +44,7 @@ export default function AppointmentTable() {
       }
       const data = await res.json();
       const list = Array.isArray(data) ? data : [];
-      if (list.length === 0) {
+      if (list.length < 20) {
         ensureSeeded();
         setAppointments(seedDemoAppointments(20));
       } else {

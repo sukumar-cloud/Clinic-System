@@ -93,6 +93,28 @@ export function seedDemoAppointments(minCount = 20): DemoAppointment[] {
   return appts;
 }
 
+// Ensure at least `minCount` appointments are in the queue (booked or waiting)
+export function ensureQueueAppointments(minCount = 20): DemoAppointment[] {
+  const docs = seedDemoDoctors(20);
+  let appts = getLocalAppointments();
+  const first = patientFirstNames();
+  const last = patientLastNames();
+  const isQueue = (s: DemoAppointment['status']) => s === 'booked' || s === 'waiting';
+  let queueCount = appts.filter(a => isQueue(a.status)).length;
+  let nextId = appts.length ? Math.max(...appts.map(a => a.id)) + 1 : 1;
+  while (queueCount < minCount) {
+    const patient = `${first[randInt(0, first.length - 1)]} ${last[randInt(0, last.length - 1)]}`;
+    const d = docs[randInt(0, docs.length - 1)];
+    const minutesAhead = randInt(5, 60 * 24); // within next day
+    const time = new Date(Date.now() + minutesAhead * 60 * 1000).toISOString();
+    const status: DemoAppointment['status'] = Math.random() < 0.5 ? 'booked' : 'waiting';
+    appts.push({ id: nextId++, patientName: patient, doctor: { id: d.id, name: d.name }, time, status });
+    queueCount++;
+  }
+  setLocalAppointments(appts);
+  return appts;
+}
+
 export function addLocalAppointment(a: Omit<DemoAppointment,'id'>): DemoAppointment {
   const appts = getLocalAppointments();
   const id = appts.length ? Math.max(...appts.map(x => x.id)) + 1 : 1;

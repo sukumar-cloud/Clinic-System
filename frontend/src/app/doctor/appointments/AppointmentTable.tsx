@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/app/components/StatusBadge";
 import { Skeleton } from "@/app/components/Skeleton";
+import { ensureSeeded, getLocalAppointments, seedDemoAppointments } from "@/app/utils/demoData";
 
 interface Appointment {
   id: number;
@@ -33,9 +34,21 @@ export default function AppointmentTable() {
           throw new Error((data as any).message || "Failed to fetch appointments");
         }
         const data = await res.json();
-        setAppointments(data);
+        const list = Array.isArray(data) ? data : [];
+        if (list.length < 20) {
+          ensureSeeded();
+          setAppointments(seedDemoAppointments(20));
+        } else {
+          setAppointments(list);
+        }
       } catch (err: any) {
-        setError(err.message || "Unknown error");
+        ensureSeeded();
+        const local = getLocalAppointments();
+        if (local.length) {
+          setAppointments(local);
+        } else {
+          setError(err.message || "Unknown error");
+        }
       } finally {
         setLoading(false);
       }
