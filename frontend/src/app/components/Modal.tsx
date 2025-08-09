@@ -17,8 +17,8 @@ export default function Modal({ open, onClose, title, children }: { open: boolea
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
       <div className="relative mx-4 w-full max-w-md rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-          <button onClick={onClose} className="rounded p-1 text-gray-500 hover:bg-gray-100">✕</button>
+          <h3 className="text-lg font-semibold text-black">{title}</h3>
+          <button onClick={onClose} className="rounded p-1 text-black hover:bg-gray-100">✕</button>
         </div>
         {children}
       </div>

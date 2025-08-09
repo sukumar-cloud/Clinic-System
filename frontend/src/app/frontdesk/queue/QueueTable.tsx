@@ -103,7 +103,7 @@ export default function QueueTable() {
       ) : error ? (
         <div className="rounded border border-red-200 bg-red-50 p-3 text-red-700 text-sm">{error}</div>
       ) : queue.length === 0 ? (
-        <div className="rounded border border-gray-200 bg-white p-3 text-gray-600 text-sm">No patients in queue.</div>
+        <div className="rounded border border-gray-200 bg-white p-3 text-black text-sm">No patients in queue.</div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
           <table className="min-w-full text-left text-sm">

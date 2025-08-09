@@ -9,8 +9,7 @@ export default function DashboardHeader() {
 
   function handleLogout() {
     logout();
-    if (user === "frontdesk") router.push("/frontdesk-login");
-    else if (user === "doctor") router.push("/doctor-login");
+    router.push("/");
   }
 
   return (
