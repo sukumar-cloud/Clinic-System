@@ -1,0 +1,79 @@
+"use client";
+import { useEffect, useState } from "react";
+import { Skeleton } from "@/app/components/Skeleton";
+
+interface Doctor { id: number; name: string; specialization?: string; available?: boolean }
+
+export default function AvailableDoctors() {
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    async function fetchDoctors() {
+      setLoading(true);
+      setError("");
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:3000/doctors", { headers: { Authorization: `Bearer ${token}` } });
+        if (!res.ok) throw new Error("Failed to fetch doctors");
+        const data = await res.json();
+        setDoctors(Array.isArray(data) ? data : []);
+      } catch (e: any) {
+        setError(e.message || "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchDoctors();
+  }, []);
+
+  const filtered = doctors.filter(d => d.name.toLowerCase().includes(search.toLowerCase()));
+
+  return (
+    <section className="mt-8">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-green-700">Available Doctors</h3>
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search doctors"
+          className="w-56 rounded border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm"
+        />
+      </div>
+      {loading ? (
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
+        </div>
+      ) : error ? (
+        <div className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div>
+      ) : filtered.length === 0 ? (
+        <div className="rounded border border-gray-200 bg-white p-3 text-sm text-gray-600">No doctors found.</div>
+      ) : (
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {filtered.map((d) => (
+            <div key={d.id} className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+              <div>
+                <div className="font-medium text-gray-800">{d.name}</div>
+                {d.specialization && <div className="text-sm text-gray-500">{d.specialization}</div>}
+                <div className="mt-1 inline-flex items-center gap-2 text-xs">
+                  <span className={`rounded-full px-2 py-0.5 font-medium ${d.available ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'}`}>
+                    {d.available ? 'Available' : 'Offline'}
+                  </span>
+                </div>
+              </div>
+              <button
+                className="rounded bg-green-600 px-3 py-2 text-xs font-medium text-white shadow hover:bg-green-700"
+                onClick={() => alert(`Schedule view for ${d.name} coming soon`)}
+              >
+                View Schedule
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
