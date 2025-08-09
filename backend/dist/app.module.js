@@ -17,6 +17,9 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const user_entity_1 = require("./users/user.entity");
+const appointment_module_1 = require("./appointments/appointment.module");
+const appointment_entity_1 = require("./appointments/appointment.entity");
+const doctor_entity_1 = require("./doctors/doctor.entity");
 let AppModule = class AppModule {
     constructor() {
         console.log('Database connection successful!');
@@ -34,10 +37,11 @@ exports.AppModule = AppModule = __decorate([
                 username: process.env.DB_USERNAME || 'root',
                 password: process.env.DB_PASSWORD || '',
                 database: process.env.DB_DATABASE || 'clinic',
-                entities: [user_entity_1.User],
+                entities: [user_entity_1.User, appointment_entity_1.Appointment, doctor_entity_1.Doctor],
                 synchronize: true,
             }),
             auth_module_1.AuthModule,
+            appointment_module_1.AppointmentModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

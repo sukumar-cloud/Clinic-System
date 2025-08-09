@@ -5,6 +5,10 @@ const app_module_1 = require("./app.module");
 async function bootstrap() {
     var _a;
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.enableCors({
+        origin: 'http://localhost:3001',
+        credentials: true,
+    });
     await app.listen((_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3000);
 }
 bootstrap();

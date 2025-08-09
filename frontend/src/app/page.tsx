@@ -14,14 +14,7 @@ export default function Page() {
   <button className="px-6 py-3 bg-white border border-blue-600 text-blue-600 rounded-lg shadow hover:bg-blue-50 transition w-full">Doctor Login</button>
 </Link>
         </div>
-        <div className="flex flex-col md:flex-row gap-4 justify-center">
-          <Link href="/queue">
-  <button className="px-6 py-3 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition w-full">Queue Management</button>
-</Link>
-          <Link href="/appointments">
-  <button className="px-6 py-3 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition w-full">Appointment Management</button>
-</Link>
-        </div>
+
       </div>
     </main>
   );
