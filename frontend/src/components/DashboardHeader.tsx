@@ -15,18 +15,18 @@ export default function DashboardHeader() {
 
   return (
     <header className="w-full flex items-center justify-between bg-white shadow px-8 py-4 mb-8">
-      <div className="font-bold text-xl text-blue-700">Clinic System</div>
+      <div className="font-bold text-xl text-black">Clinic System</div>
       <nav className="flex gap-4">
         {user === "frontdesk" && (
           <>
-            <Link href="/frontdesk/queue" className="text-blue-700 hover:underline">Queue</Link>
-            <Link href="/frontdesk/appointments" className="text-purple-700 hover:underline">Appointments</Link>
+            <Link href="/frontdesk/queue" className="text-black hover:underline">Queue</Link>
+            <Link href="/frontdesk/appointments" className="text-black hover:underline">Appointments</Link>
           </>
         )}
         {user === "doctor" && (
           <>
-            <Link href="/doctor/queue" className="text-blue-700 hover:underline">Queue</Link>
-            <Link href="/doctor/appointments" className="text-purple-700 hover:underline">Appointments</Link>
+            <Link href="/doctor/queue" className="text-black hover:underline">Queue</Link>
+            <Link href="/doctor/appointments" className="text-black hover:underline">Appointments</Link>
           </>
         )}
         <button

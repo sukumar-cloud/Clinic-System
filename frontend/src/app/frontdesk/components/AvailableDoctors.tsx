@@ -39,7 +39,7 @@ export default function AvailableDoctors() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search doctors"
-          className="w-56 rounded border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm"
+          className="w-56 rounded border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400 hover:border-gray-400"
         />
       </div>
       {loading ? (
@@ -54,7 +54,7 @@ export default function AvailableDoctors() {
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {filtered.map((d) => (
-            <div key={d.id} className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+            <div key={d.id} className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md hover:border-gray-300">
               <div>
                 <div className="font-medium text-gray-800">{d.name}</div>
                 {d.specialization && <div className="text-sm text-gray-500">{d.specialization}</div>}
@@ -65,7 +65,7 @@ export default function AvailableDoctors() {
                 </div>
               </div>
               <button
-                className="rounded bg-green-600 px-3 py-2 text-xs font-medium text-white shadow hover:bg-green-700"
+                className="rounded bg-green-600 px-3 py-2 text-xs font-medium text-white shadow hover:bg-green-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-300 transition"
                 onClick={() => alert(`Schedule view for ${d.name} coming soon`)}
               >
                 View Schedule

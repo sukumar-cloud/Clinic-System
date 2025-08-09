@@ -67,15 +67,15 @@ export default function AppointmentTable() {
     <div className="w-full">
       <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-semibold text-purple-700">Appointments</h2>
-          <span className="text-sm text-gray-500">Doctor view</span>
+          <h2 className="text-xl font-semibold text-black">Appointments</h2>
+          <span className="text-sm text-black">Doctor view</span>
         </div>
         <div className="flex gap-2 w-full md:w-auto">
-          <select className="w-36 rounded border-gray-300 bg-white shadow-sm px-2 py-2 text-sm" value={dayFilter} onChange={(e) => setDayFilter(e.target.value)}>
+          <select className="w-36 rounded border-gray-300 bg-white shadow-sm px-2 py-2 text-sm text-black" value={dayFilter} onChange={(e) => setDayFilter(e.target.value)}>
             <option>All</option>
             <option value="Today">Today</option>
           </select>
-          <select className="w-36 rounded border-gray-300 bg-white shadow-sm px-2 py-2 text-sm" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+          <select className="w-36 rounded border-gray-300 bg-white shadow-sm px-2 py-2 text-sm text-black" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
             <option>All</option>
             <option value="booked">Booked</option>
             <option value="waiting">Waiting</option>
@@ -85,7 +85,7 @@ export default function AppointmentTable() {
           <input
             type="text"
             placeholder="Search patients or doctors"
-            className="flex-1 md:w-64 rounded border-gray-300 bg-white shadow-sm px-3 py-2 text-sm"
+            className="flex-1 md:w-64 rounded border-gray-300 bg-white shadow-sm px-3 py-2 text-sm text-black placeholder:text-black/60"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -101,11 +101,11 @@ export default function AppointmentTable() {
       ) : error ? (
         <div className="rounded border border-red-200 bg-red-50 p-3 text-red-700 text-sm">{error}</div>
       ) : list.length === 0 ? (
-        <div className="rounded border border-gray-200 bg-white p-3 text-gray-600 text-sm">No appointments found.</div>
+        <div className="rounded border border-gray-200 bg-white p-3 text-black text-sm">No appointments found.</div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
           <table className="min-w-full text-left text-sm">
-            <thead className="sticky top-0 bg-gray-50 text-gray-600">
+            <thead className="sticky top-0 bg-gray-50 text-black">
               <tr>
                 <th className="px-4 py-3 font-medium">Patient</th>
                 <th className="px-4 py-3 font-medium">Doctor</th>
@@ -116,9 +116,9 @@ export default function AppointmentTable() {
             <tbody>
               {list.map((appt, idx) => (
                 <tr key={appt.id} className={idx % 2 ? "bg-white" : "bg-gray-50 hover:bg-gray-100"}>
-                  <td className="px-4 py-3 font-medium text-gray-800">{appt.patientName}</td>
-                  <td className="px-4 py-3 text-gray-700">{appt.doctor?.name || appt.doctor?.id}</td>
-                  <td className="px-4 py-3 text-gray-700">{fmt.format(new Date(appt.time))}</td>
+                  <td className="px-4 py-3 font-medium text-black">{appt.patientName}</td>
+                  <td className="px-4 py-3 text-black">{appt.doctor?.name || appt.doctor?.id}</td>
+                  <td className="px-4 py-3 text-black">{fmt.format(new Date(appt.time))}</td>
                   <td className="px-4 py-3"><StatusBadge status={appt.status} /></td>
                 </tr>
               ))}

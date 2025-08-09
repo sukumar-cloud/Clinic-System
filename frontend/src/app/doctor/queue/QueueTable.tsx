@@ -72,12 +72,12 @@ export default function QueueTable() {
     <div className="w-full">
       <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-semibold text-emerald-700">Queue</h2>
-          <span className="text-sm text-gray-500">Doctor view</span>
+          <h2 className="text-xl font-semibold text-black">Queue</h2>
+          <span className="text-sm text-black">Doctor view</span>
         </div>
         <div className="flex gap-2 w-full md:w-auto">
           <select
-            className="w-36 rounded border-gray-300 bg-white shadow-sm px-2 py-2 text-sm"
+            className="w-36 rounded border-gray-300 bg-white shadow-sm px-2 py-2 text-sm text-black"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
@@ -88,7 +88,7 @@ export default function QueueTable() {
           <input
             type="text"
             placeholder="Search patients or doctors"
-            className="flex-1 md:w-64 rounded border-gray-300 bg-white shadow-sm px-3 py-2 text-sm"
+            className="flex-1 md:w-64 rounded border-gray-300 bg-white shadow-sm px-3 py-2 text-sm text-black placeholder:text-black/60"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -104,11 +104,11 @@ export default function QueueTable() {
       ) : error ? (
         <div className="rounded border border-red-200 bg-red-50 p-3 text-red-700 text-sm">{error}</div>
       ) : queue.length === 0 ? (
-        <div className="rounded border border-gray-200 bg-white p-3 text-gray-600 text-sm">No patients in queue.</div>
+        <div className="rounded border border-gray-200 bg-white p-3 text-black text-sm">No patients in queue.</div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
           <table className="min-w-full text-left text-sm">
-            <thead className="sticky top-0 bg-gray-50 text-gray-600">
+            <thead className="sticky top-0 bg-gray-50 text-black">
               <tr>
                 <th className="px-4 py-3 font-medium">Patient</th>
                 <th className="px-4 py-3 font-medium">Doctor</th>
@@ -120,9 +120,9 @@ export default function QueueTable() {
             <tbody>
               {queue.map((appt, idx) => (
                 <tr key={appt.id} className={idx % 2 ? "bg-white" : "bg-gray-50 hover:bg-gray-100"}>
-                  <td className="px-4 py-3 font-medium text-gray-800">{appt.patientName}</td>
-                  <td className="px-4 py-3 text-gray-700">{appt.doctor?.name || appt.doctor?.id}</td>
-                  <td className="px-4 py-3 text-gray-700">{fmt.format(new Date(appt.time))}</td>
+                  <td className="px-4 py-3 font-medium text-black">{appt.patientName}</td>
+                  <td className="px-4 py-3 text-black">{appt.doctor?.name || appt.doctor?.id}</td>
+                  <td className="px-4 py-3 text-black">{fmt.format(new Date(appt.time))}</td>
                   <td className="px-4 py-3"><StatusBadge status={appt.status} /></td>
                   <td className="px-4 py-3 text-right">
                     <button
@@ -130,7 +130,7 @@ export default function QueueTable() {
                       className={`inline-flex items-center rounded px-3 py-1.5 text-xs font-medium shadow-sm border transition ${
                         (priorities[appt.id] || "normal") === "urgent"
                           ? "bg-rose-600 text-white border-rose-600 hover:bg-rose-700"
-                          : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                          : "bg-white text-black border-gray-300 hover:bg-gray-50"
                       }`}
                     >
                       {(priorities[appt.id] || "normal") === "urgent" ? "Mark Normal" : "Mark Urgent"}
