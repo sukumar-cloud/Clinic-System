@@ -72,7 +72,7 @@ export default function QueueTable() {
     <div className="w-full">
       <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-semibold text-black">Queue</h2>
+          <h2 className="text-xl font-semibold text-black blink-caret">Queue</h2>
           <span className="text-sm text-black">Doctor view</span>
         </div>
         <div className="flex gap-2 w-full md:w-auto">

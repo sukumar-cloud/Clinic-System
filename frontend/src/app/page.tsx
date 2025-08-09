@@ -12,10 +12,10 @@ export default function Page() {
         </p>
         <div className="flex flex-col md:flex-row gap-4 justify-center mb-8">
           <Link href="/frontdesk-login">
-  <button className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 hover:shadow-lg transition transform hover:-translate-y-0.5 focus:outline-none w-full">Front Desk Login</button>
+  <button className="btn btn-primary w-full">Front Desk Login</button>
 </Link>
           <Link href="/doctor-login">
-  <button className="px-6 py-3 bg-white border border-blue-600 text-blue-600 rounded-lg shadow hover:bg-blue-50 hover:shadow-lg transition transform hover:-translate-y-0.5 focus:outline-none w-full">Doctor Login</button>
+  <button className="btn btn-outline w-full">Doctor Login</button>
 </Link>
         </div>
 

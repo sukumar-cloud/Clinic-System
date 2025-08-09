@@ -126,10 +126,8 @@ export default function QueueTable() {
                   <td className="px-4 py-3 text-right">
                     <button
                       onClick={() => togglePriority(appt.id)}
-                      className={`inline-flex items-center rounded px-3 py-1.5 text-xs font-medium shadow-sm border transition ${
-                        (priorities[appt.id] || "normal") === "urgent"
-                          ? "bg-rose-600 text-white border-rose-600 hover:bg-rose-700"
-                          : "bg-white text-black border-gray-300 hover:bg-gray-50"
+                      className={`btn text-xs ${
+                        (priorities[appt.id] || "normal") === "urgent" ? "btn-danger" : "btn-outline"
                       }`}
                     >
                       {(priorities[appt.id] || "normal") === "urgent" ? "Mark Normal" : "Mark Urgent"}

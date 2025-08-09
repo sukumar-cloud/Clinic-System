@@ -52,7 +52,7 @@ export default function DoctorLoginPage() {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <input type="text" placeholder="Username" className="border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300" value={username} onChange={e => setUsername(e.target.value)} required />
           <input type="password" placeholder="Password" className="border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300" value={password} onChange={e => setPassword(e.target.value)} required />
-          <button type="submit" className="bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition" disabled={loading}>{loading ? "Logging in..." : "Login"}</button>
+          <button type="submit" className="btn btn-primary" disabled={loading}>{loading ? "Logging in..." : "Login"}</button>
         </form>
       </div>
     </main>

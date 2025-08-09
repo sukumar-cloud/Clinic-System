@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/app/components/Skeleton";
+import { ensureSeeded, getLocalDoctors, seedDemoDoctors } from "@/app/utils/demoData";
 
 interface Doctor { id: number; name: string; specialization?: string; available?: boolean }
 
@@ -19,9 +20,22 @@ export default function AvailableDoctors() {
         const res = await fetch("http://localhost:3000/doctors", { headers: { Authorization: `Bearer ${token}` } });
         if (!res.ok) throw new Error("Failed to fetch doctors");
         const data = await res.json();
-        setDoctors(Array.isArray(data) ? data : []);
+        const list = Array.isArray(data) ? data : [];
+        if (list.length === 0) {
+          ensureSeeded();
+          setDoctors(seedDemoDoctors(20));
+        } else {
+          setDoctors(list);
+        }
       } catch (e: any) {
-        setError(e.message || "Unknown error");
+        // Fallback to local seeded data
+        ensureSeeded();
+        const local = getLocalDoctors();
+        if (local.length) {
+          setDoctors(local);
+        } else {
+          setError(e.message || "Unknown error");
+        }
       } finally {
         setLoading(false);
       }
@@ -65,7 +79,7 @@ export default function AvailableDoctors() {
                 </div>
               </div>
               <button
-                className="rounded bg-green-600 px-3 py-2 text-xs font-medium text-white shadow hover:bg-green-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-300 transition"
+                className="btn btn-primary text-xs"
                 onClick={() => alert(`Schedule view for ${d.name} coming soon`)}
               >
                 View Schedule

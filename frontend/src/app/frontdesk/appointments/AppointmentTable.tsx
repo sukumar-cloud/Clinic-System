@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/app/components/StatusBadge";
 import { Skeleton } from "@/app/components/Skeleton";
 import Modal from "@/app/components/Modal";
+import { ensureSeeded, getLocalAppointments, getLocalDoctors, seedDemoAppointments, seedDemoDoctors, addLocalAppointment } from "@/app/utils/demoData";
 
 interface Appointment {
   id: number;
@@ -42,9 +43,22 @@ export default function AppointmentTable() {
         throw new Error((data as any).message || "Failed to fetch appointments");
       }
       const data = await res.json();
-      setAppointments(data);
+      const list = Array.isArray(data) ? data : [];
+      if (list.length === 0) {
+        ensureSeeded();
+        setAppointments(seedDemoAppointments(20));
+      } else {
+        setAppointments(list);
+      }
     } catch (err: any) {
-      setError(err.message || "Unknown error");
+      // Fallback to local demo data
+      ensureSeeded();
+      const local = getLocalAppointments();
+      if (local.length) {
+        setAppointments(local);
+      } else {
+        setError(err.message || "Unknown error");
+      }
     } finally {
       setLoading(false);
     }
@@ -79,9 +93,16 @@ export default function AppointmentTable() {
       const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:3000/doctors", { headers: { Authorization: `Bearer ${token}` } });
       const data = await res.json().catch(() => []);
-      if (Array.isArray(data)) setDoctors(data);
+      if (Array.isArray(data) && data.length) {
+        setDoctors(data);
+      } else {
+        ensureSeeded();
+        setDoctors(seedDemoDoctors(20));
+      }
     } catch {
-      // ignore silently for demo
+      ensureSeeded();
+      const local = getLocalDoctors();
+      if (local.length) setDoctors(local);
     }
   }
 
@@ -100,9 +121,18 @@ export default function AppointmentTable() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error((data as any).message || "Failed to schedule appointment");
+        // Backend failed; add locally so UI reflects the new appointment
+        const doctorName = doctors.find(d => d.id === Number(form.doctorId))?.name || `Doctor #${form.doctorId}`;
+        addLocalAppointment({
+          patientName: form.patientName,
+          doctor: { id: Number(form.doctorId), name: doctorName },
+          time: new Date(form.time).toISOString(),
+          status: "booked",
+        });
+        setAppointments(getLocalAppointments());
+      } else {
+        await loadAppointments();
       }
-      await loadAppointments();
       setOpen(false);
       setForm({ patientName: "", doctorId: "", time: "" });
     } catch (err: any) {
@@ -138,7 +168,7 @@ export default function AppointmentTable() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button onClick={openScheduleModal} className="shrink-0 rounded bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-purple-700">Schedule</button>
+          <button onClick={openScheduleModal} className="shrink-0 btn btn-primary">Schedule</button>
         </div>
       </div>
 

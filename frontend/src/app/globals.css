@@ -25,6 +25,14 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Hide blinking text caret everywhere except where typing is expected */
+:where(html, body) :where(*):not(input, textarea, [contenteditable="true"]) {
+  caret-color: transparent !important;
+}
+input, textarea, [contenteditable="true"] {
+  caret-color: #000;
+}
+
 /* Hide Next.js dev indicator badge in development */
 #__next-build-watcher,
 #__next-build-indicator,
@@ -38,39 +46,72 @@ body {
   visibility: hidden !important;
 }
 
-/* Component button styles */
-@layer components {
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-300 ease-out select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] shadow;
-  }
-  .btn-primary {
-    /* animated gradient that moves on hover */
-    background-image: linear-gradient(90deg, #2563eb, #7c3aed, #2563eb);
-    background-size: 200% 100%;
-    background-position: 0% 0%;
-    color: #fff;
-    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
-  }
-  .btn-primary:hover {
-    background-position: 100% 0%;
-    box-shadow: 0 10px 24px rgba(124, 58, 237, 0.35);
-  }
-
-  .btn-outline {
-    @apply border;
-    border-color: #2563eb;
-    color: #2563eb;
-    background: white;
-  }
-  .btn-outline:hover {
-    background-image: linear-gradient(90deg, rgba(37,99,235,0.08), rgba(124,58,237,0.08));
-  }
-
-  .btn-danger {
-    background-image: linear-gradient(90deg, #ef4444, #f97316, #ef4444);
-    background-size: 200% 100%;
-    background-position: 0% 0%;
-    color: #fff;
-  }
-  .btn-danger:hover { background-position: 100% 0%; }
+/* Component button styles (no Tailwind @apply to keep it portable) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  border-radius: 0.5rem; /* rounded-lg */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  line-height: 1.25rem;
+  transition: all 300ms ease-out;
+  user-select: none;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  animation: btnBlink 2.4s ease-in-out infinite;
 }
+.btn:focus-visible {
+  outline: 2px solid rgba(59,130,246,0.6);
+  outline-offset: 2px;
+}
+.btn:active { transform: scale(0.98); }
+
+.btn-primary {
+  background-image: linear-gradient(90deg, #2563eb, #7c3aed, #2563eb);
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+.btn-primary:hover {
+  background-position: 100% 0%;
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.35);
+}
+
+.btn-outline {
+  border: 1px solid #2563eb;
+  color: #2563eb;
+  background: #ffffff;
+}
+.btn-outline:hover {
+  background-image: linear-gradient(90deg, rgba(37,99,235,0.08), rgba(124,58,237,0.08));
+}
+
+.btn-danger {
+  background-image: linear-gradient(90deg, #ef4444, #f97316, #ef4444);
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  color: #fff;
+}
+.btn-danger:hover { background-position: 100% 0%; }
+
+/* Subtle blink/pulse animation used across all buttons */
+@keyframes btnBlink {
+  0%, 100% {
+    filter: brightness(1);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  50% {
+    filter: brightness(1.06);
+    box-shadow: 0 6px 18px rgba(37,99,235,0.18);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn-primary, .btn-outline, .btn-danger { animation: none !important; }
+}
+
+/* Removed blinking caret utility as per request */
