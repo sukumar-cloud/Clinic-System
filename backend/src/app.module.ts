@@ -9,6 +9,8 @@ import { AppointmentModule } from './appointments/appointment.module';
 import { Appointment } from './appointments/appointment.entity';
 import { Doctor } from './doctors/doctor.entity';
 import { DoctorModule } from './doctors/doctor.module';
+import { TypeOrmModule as FeatureTypeOrmModule } from '@nestjs/typeorm';
+import { SeedService } from './seed/seed.service';
 
 @Module({
   imports: [
@@ -23,12 +25,13 @@ import { DoctorModule } from './doctors/doctor.module';
       entities: [User, Appointment, Doctor],
       synchronize: true,
     }),
+    FeatureTypeOrmModule.forFeature([Doctor, Appointment]),
     AuthModule,
     AppointmentModule,
     DoctorModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SeedService],
 })
 export class AppModule {
   constructor() {
