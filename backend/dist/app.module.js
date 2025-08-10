@@ -23,6 +23,8 @@ const doctor_entity_1 = require("./doctors/doctor.entity");
 const doctor_module_1 = require("./doctors/doctor.module");
 const typeorm_2 = require("@nestjs/typeorm");
 const seed_service_1 = require("./seed/seed.service");
+const patient_entity_1 = require("./patients/patient.entity");
+const patients_module_1 = require("./patients/patients.module");
 let AppModule = class AppModule {
     constructor() {
         console.log('Database connection successful!');
@@ -40,13 +42,14 @@ exports.AppModule = AppModule = __decorate([
                 username: process.env.DB_USERNAME || 'root',
                 password: process.env.DB_PASSWORD || '',
                 database: process.env.DB_DATABASE || 'clinic',
-                entities: [user_entity_1.User, appointment_entity_1.Appointment, doctor_entity_1.Doctor],
+                entities: [user_entity_1.User, appointment_entity_1.Appointment, doctor_entity_1.Doctor, patient_entity_1.Patient],
                 synchronize: true,
             }),
-            typeorm_2.TypeOrmModule.forFeature([doctor_entity_1.Doctor, appointment_entity_1.Appointment, user_entity_1.User]),
+            typeorm_2.TypeOrmModule.forFeature([doctor_entity_1.Doctor, appointment_entity_1.Appointment, user_entity_1.User, patient_entity_1.Patient]),
             auth_module_1.AuthModule,
             appointment_module_1.AppointmentModule,
             doctor_module_1.DoctorModule,
+            patients_module_1.PatientsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, seed_service_1.SeedService],
