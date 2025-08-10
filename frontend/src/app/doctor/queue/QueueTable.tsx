@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/app/components/StatusBadge";
 import { Skeleton } from "@/app/components/Skeleton";
-import { ensureSeeded, getLocalAppointments, seedDemoAppointments, ensureQueueAppointments } from "@/app/utils/demoData";
+import { ensureSeeded, ensureQueueAppointments } from "@/app/utils/demoData";
 
 interface Appointment {
   id: number;
@@ -32,8 +32,8 @@ export default function QueueTable() {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error((data as any).message || "Failed to fetch queue");
+          const data: { message?: string } = await res.json().catch(() => ({} as { message?: string }));
+          throw new Error(data.message || "Failed to fetch queue");
         }
         const data = await res.json();
         const list = Array.isArray(data) ? data : [];
@@ -44,13 +44,14 @@ export default function QueueTable() {
         } else {
           setAppointments(list);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         ensureSeeded();
         const local = ensureQueueAppointments(25);
         if (local.length) {
           setAppointments(local);
         } else {
-          setError(err.message || "Unknown error");
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          setError(msg);
         }
       } finally {
         setLoading(false);

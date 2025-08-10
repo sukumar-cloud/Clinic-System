@@ -11,8 +11,6 @@ import { Doctor } from './doctors/doctor.entity';
 import { DoctorModule } from './doctors/doctor.module';
 import { TypeOrmModule as FeatureTypeOrmModule } from '@nestjs/typeorm';
 import { SeedService } from './seed/seed.service';
-import { Patient } from './patients/patient.entity';
-import { PatientsModule } from './patients/patients.module';
 
 @Module({
   imports: [
@@ -24,14 +22,13 @@ import { PatientsModule } from './patients/patients.module';
       username: (process.env.DB_USERNAME as string) || 'root',
       password: (process.env.DB_PASSWORD as string) || '',
       database: (process.env.DB_DATABASE as string) || 'clinic',
-      entities: [User, Appointment, Doctor, Patient],
+      entities: [User, Appointment, Doctor],
       synchronize: true,
     }),
-    FeatureTypeOrmModule.forFeature([Doctor, Appointment, User, Patient]),
+    FeatureTypeOrmModule.forFeature([Doctor, Appointment, User]),
     AuthModule,
     AppointmentModule,
     DoctorModule,
-    PatientsModule,
   ],
   controllers: [AppController],
   providers: [AppService, SeedService],

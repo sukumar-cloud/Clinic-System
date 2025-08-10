@@ -59,7 +59,7 @@ export function setLocalAppointments(appts: DemoAppointment[]) {
 }
 
 export function seedDemoDoctors(minCount = 20): DemoDoctor[] {
-  let docs = getLocalDoctors();
+  const docs = getLocalDoctors();
   if (docs.length >= minCount) return docs;
   const names = doctorNames();
   const specs = specializations();
@@ -74,7 +74,7 @@ export function seedDemoDoctors(minCount = 20): DemoDoctor[] {
 }
 
 export function seedDemoAppointments(minCount = 20): DemoAppointment[] {
-  let appts = getLocalAppointments();
+  const appts = getLocalAppointments();
   if (appts.length >= minCount) return appts;
   const docs = seedDemoDoctors(minCount);
   const first = patientFirstNames();
@@ -96,7 +96,7 @@ export function seedDemoAppointments(minCount = 20): DemoAppointment[] {
 // Ensure at least `minCount` appointments are in the queue (booked or waiting)
 export function ensureQueueAppointments(minCount = 20): DemoAppointment[] {
   const docs = seedDemoDoctors(20);
-  let appts = getLocalAppointments();
+  const appts = getLocalAppointments();
   const first = patientFirstNames();
   const last = patientLastNames();
   const isQueue = (s: DemoAppointment['status']) => s === 'booked' || s === 'waiting';

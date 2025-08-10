@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { StatusBadge } from "@/app/components/StatusBadge";
 import { Skeleton } from "@/app/components/Skeleton";
 import Modal from "@/app/components/Modal";
@@ -40,8 +39,8 @@ export default function AppointmentTable() {
       const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:3000/appointments", { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error((data as any).message || "Failed to fetch appointments");
+        const data: { message?: string } = await res.json().catch(() => ({} as { message?: string }));
+        throw new Error(data.message || "Failed to fetch appointments");
       }
       const data = await res.json();
       const list = Array.isArray(data) ? data : [];
@@ -51,14 +50,15 @@ export default function AppointmentTable() {
       } else {
         setAppointments(list);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Fallback to local demo data
       ensureSeeded();
       const local = getLocalAppointments();
       if (local.length) {
         setAppointments(local);
       } else {
-        setError(err.message || "Unknown error");
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        setError(msg);
       }
     } finally {
       setLoading(false);
@@ -121,7 +121,6 @@ export default function AppointmentTable() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
         // Backend failed; add locally so UI reflects the new appointment
         const doctorName = doctors.find(d => d.id === Number(form.doctorId))?.name || `Doctor #${form.doctorId}`;
         addLocalAppointment({
@@ -136,8 +135,9 @@ export default function AppointmentTable() {
       }
       setOpen(false);
       setForm({ patientName: "", doctorId: "", time: "" });
-    } catch (err: any) {
-      setSubmitError(err.message || "Unknown error");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setSubmitError(msg);
     } finally {
       setSubmitting(false);
     }
@@ -169,7 +169,6 @@ export default function AppointmentTable() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Link href="/frontdesk/patients" className="btn btn-outline">Patients</Link>
           <button onClick={openScheduleModal} className="shrink-0 btn btn-primary">Schedule</button>
         </div>
       </div>

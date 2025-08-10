@@ -30,8 +30,8 @@ export default function AppointmentTable() {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error((data as any).message || "Failed to fetch appointments");
+          const data: { message?: string } = await res.json().catch(() => ({} as { message?: string }));
+          throw new Error(data.message || "Failed to fetch appointments");
         }
         const data = await res.json();
         const list = Array.isArray(data) ? data : [];
@@ -41,13 +41,14 @@ export default function AppointmentTable() {
         } else {
           setAppointments(list);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         ensureSeeded();
         const local = getLocalAppointments();
         if (local.length) {
           setAppointments(local);
         } else {
-          setError(err.message || "Unknown error");
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          setError(msg);
         }
       } finally {
         setLoading(false);

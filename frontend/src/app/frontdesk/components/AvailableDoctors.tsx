@@ -27,14 +27,15 @@ export default function AvailableDoctors() {
         } else {
           setDoctors(list);
         }
-      } catch (e: any) {
+      } catch (e: unknown) {
         // Fallback to local seeded data
         ensureSeeded();
         const local = getLocalDoctors();
         if (local.length) {
           setDoctors(local);
         } else {
-          setError(e.message || "Unknown error");
+          const msg = e instanceof Error ? e.message : "Unknown error";
+          setError(msg);
         }
       } finally {
         setLoading(false);

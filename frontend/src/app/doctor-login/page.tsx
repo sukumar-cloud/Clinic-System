@@ -35,7 +35,7 @@ export default function DoctorLoginPage() {
       } else {
         setError(data.message || "Invalid username or password");
       }
-    } catch (err) {
+    } catch {
       setError("Network error. Please try again.");
     }
     setLoading(false);

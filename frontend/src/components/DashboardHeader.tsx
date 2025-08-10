@@ -37,13 +37,6 @@ export default function DashboardHeader() {
             >
               Appointments
             </Link>
-            <Link
-              href="/frontdesk/patients"
-              className={`btn ${isActive("/frontdesk/patients") ? "btn-primary" : "btn-outline"}`}
-              aria-current={isActive("/frontdesk/patients") ? "page" : undefined}
-            >
-              Patients
-            </Link>
           </>
         )}
         {user === "doctor" && (
