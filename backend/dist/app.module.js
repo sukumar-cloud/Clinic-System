@@ -43,7 +43,7 @@ exports.AppModule = AppModule = __decorate([
                 entities: [user_entity_1.User, appointment_entity_1.Appointment, doctor_entity_1.Doctor],
                 synchronize: true,
             }),
-            typeorm_2.TypeOrmModule.forFeature([doctor_entity_1.Doctor, appointment_entity_1.Appointment]),
+            typeorm_2.TypeOrmModule.forFeature([doctor_entity_1.Doctor, appointment_entity_1.Appointment, user_entity_1.User]),
             auth_module_1.AuthModule,
             appointment_module_1.AppointmentModule,
             doctor_module_1.DoctorModule,

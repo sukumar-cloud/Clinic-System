@@ -19,14 +19,36 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const doctor_entity_1 = require("../doctors/doctor.entity");
 const appointment_entity_1 = require("../appointments/appointment.entity");
+const user_entity_1 = require("../users/user.entity");
+const bcrypt = require("bcryptjs");
 let SeedService = SeedService_1 = class SeedService {
-    constructor(doctorRepo, appointmentRepo) {
+    constructor(doctorRepo, appointmentRepo, userRepo) {
         this.doctorRepo = doctorRepo;
         this.appointmentRepo = appointmentRepo;
+        this.userRepo = userRepo;
         this.logger = new common_1.Logger(SeedService_1.name);
     }
     async onApplicationBootstrap() {
+        await this.seedUsers();
         await this.seedDoctorsAndAppointments();
+    }
+    async seedUsers() {
+        try {
+            const existing = await this.userRepo.findOne({ where: { username: 'frontdesk' } });
+            if (!existing) {
+                const hashed = await bcrypt.hash('frontdesk', 10);
+                const user = this.userRepo.create({
+                    username: 'frontdesk',
+                    password: hashed,
+                    role: 'frontdesk',
+                });
+                await this.userRepo.save(user);
+                this.logger.log("Seeded default user 'frontdesk'.");
+            }
+        }
+        catch (e) {
+            this.logger.error('Error seeding default user', e);
+        }
     }
     async seedDoctorsAndAppointments() {
         const doctorCount = await this.doctorRepo.count();
@@ -77,7 +99,9 @@ exports.SeedService = SeedService = SeedService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(doctor_entity_1.Doctor)),
     __param(1, (0, typeorm_1.InjectRepository)(appointment_entity_1.Appointment)),
+    __param(2, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository])
 ], SeedService);
 //# sourceMappingURL=seed.service.js.map

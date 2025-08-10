@@ -25,7 +25,7 @@ import { SeedService } from './seed/seed.service';
       entities: [User, Appointment, Doctor],
       synchronize: true,
     }),
-    FeatureTypeOrmModule.forFeature([Doctor, Appointment]),
+    FeatureTypeOrmModule.forFeature([Doctor, Appointment, User]),
     AuthModule,
     AppointmentModule,
     DoctorModule,

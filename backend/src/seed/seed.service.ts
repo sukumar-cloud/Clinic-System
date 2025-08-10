@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Doctor } from '../doctors/doctor.entity';
 import { Appointment } from '../appointments/appointment.entity';
+import { User } from '../users/user.entity';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class SeedService implements OnApplicationBootstrap {
@@ -13,10 +15,31 @@ export class SeedService implements OnApplicationBootstrap {
     private readonly doctorRepo: Repository<Doctor>,
     @InjectRepository(Appointment)
     private readonly appointmentRepo: Repository<Appointment>,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
   ) {}
 
   async onApplicationBootstrap() {
+    await this.seedUsers();
     await this.seedDoctorsAndAppointments();
+  }
+
+  private async seedUsers() {
+    try {
+      const existing = await this.userRepo.findOne({ where: { username: 'frontdesk' } });
+      if (!existing) {
+        const hashed = await bcrypt.hash('frontdesk', 10);
+        const user = this.userRepo.create({
+          username: 'frontdesk',
+          password: hashed,
+          role: 'frontdesk',
+        });
+        await this.userRepo.save(user);
+        this.logger.log("Seeded default user 'frontdesk'.");
+      }
+    } catch (e) {
+      this.logger.error('Error seeding default user', e as any);
+    }
   }
 
   private async seedDoctorsAndAppointments() {
