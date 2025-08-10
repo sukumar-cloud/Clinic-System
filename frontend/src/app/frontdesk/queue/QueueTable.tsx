@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/app/components/StatusBadge";
 import { Skeleton } from "@/app/components/Skeleton";
 import { ensureSeeded, ensureQueueAppointments } from "@/app/utils/demoData";
+import { apiUrl } from "@/app/utils/api";
 
 interface Appointment {
   id: number;
@@ -28,7 +29,7 @@ export default function QueueTable() {
       setError("");
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:3000/appointments", {
+        const res = await fetch(apiUrl("/appointments"), {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {

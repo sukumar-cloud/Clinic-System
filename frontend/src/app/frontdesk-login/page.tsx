@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "@/app/utils/api";
 
 export default function FrontDeskLoginPage() {
   const [username, setUsername] = useState("");
@@ -20,7 +21,7 @@ export default function FrontDeskLoginPage() {
     await new Promise(r => setTimeout(r, 800));
     // Call backend API for login
     try {
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch(apiUrl("/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),

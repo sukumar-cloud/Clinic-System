@@ -4,6 +4,7 @@ import { StatusBadge } from "@/app/components/StatusBadge";
 import { Skeleton } from "@/app/components/Skeleton";
 import Modal from "@/app/components/Modal";
 import { ensureSeeded, getLocalAppointments, getLocalDoctors, seedDemoAppointments, seedDemoDoctors, addLocalAppointment } from "@/app/utils/demoData";
+import { apiUrl } from "@/app/utils/api";
 
 interface Appointment {
   id: number;
@@ -37,7 +38,7 @@ export default function AppointmentTable() {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/appointments", { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch(apiUrl("/appointments"), { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) {
         const data: { message?: string } = await res.json().catch(() => ({} as { message?: string }));
         throw new Error(data.message || "Failed to fetch appointments");
@@ -92,7 +93,7 @@ export default function AppointmentTable() {
     // fetch doctors list once modal opens
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/doctors", { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch(apiUrl("/doctors"), { headers: { Authorization: `Bearer ${token}` } });
       const data = await res.json().catch(() => []);
       if (Array.isArray(data) && data.length) {
         setDoctors(data);
@@ -115,7 +116,7 @@ export default function AppointmentTable() {
       if (!form.patientName || !form.doctorId || !form.time) throw new Error("All fields are required");
       const payload = { patientName: form.patientName, doctorId: Number(form.doctorId), time: new Date(form.time) };
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/appointments", {
+      const res = await fetch(apiUrl("/appointments"), {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),

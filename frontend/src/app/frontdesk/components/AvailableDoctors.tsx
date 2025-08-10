@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/app/components/Skeleton";
 import { ensureSeeded, getLocalDoctors, seedDemoDoctors } from "@/app/utils/demoData";
+import { apiUrl } from "@/app/utils/api";
 
 interface Doctor { id: number; name: string; specialization?: string; available?: boolean }
 
@@ -17,7 +18,7 @@ export default function AvailableDoctors() {
       setError("");
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:3000/doctors", { headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetch(apiUrl("/doctors"), { headers: { Authorization: `Bearer ${token}` } });
         if (!res.ok) throw new Error("Failed to fetch doctors");
         const data = await res.json();
         const list = Array.isArray(data) ? data : [];
