@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { StatusBadge } from "@/app/components/StatusBadge";
 import { Skeleton } from "@/app/components/Skeleton";
 import Modal from "@/app/components/Modal";
@@ -168,6 +169,7 @@ export default function AppointmentTable() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          <Link href="/frontdesk/patients" className="btn btn-outline">Patients</Link>
           <button onClick={openScheduleModal} className="shrink-0 btn btn-primary">Schedule</button>
         </div>
       </div>
@@ -242,8 +244,8 @@ export default function AppointmentTable() {
           </div>
           {submitError && <div className="text-sm text-red-600">{submitError}</div>}
           <div className="flex justify-end gap-2 pt-2">
-            <button type="button" onClick={() => setOpen(false)} className="rounded border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50">Cancel</button>
-            <button disabled={submitting} type="submit" className="rounded bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-purple-700 disabled:opacity-50">
+            <button type="button" onClick={() => setOpen(false)} className="btn btn-outline">Cancel</button>
+            <button disabled={submitting} type="submit" className="btn btn-primary">
               {submitting ? "Scheduling..." : "Schedule Appointment"}
             </button>
           </div>
