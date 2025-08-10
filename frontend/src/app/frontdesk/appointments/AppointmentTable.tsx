@@ -121,17 +121,33 @@ export default function AppointmentTable() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        // Backend failed; add locally so UI reflects the new appointment
         const doctorName = doctors.find(d => d.id === Number(form.doctorId))?.name || `Doctor #${form.doctorId}`;
-        addLocalAppointment({
+        const createdLocal = addLocalAppointment({
           patientName: form.patientName,
           doctor: { id: Number(form.doctorId), name: doctorName },
           time: new Date(form.time).toISOString(),
           status: "booked",
         });
-        setAppointments(getLocalAppointments());
+        setAppointments(prev => [...prev, createdLocal]);
+        window.alert("Successfully added appointment");
       } else {
-        await loadAppointments();
+        const created: unknown = await res.json().catch(() => null);
+        const doctorName = doctors.find(d => d.id === Number(form.doctorId))?.name || `Doctor #${form.doctorId}`;
+        const obj = created && typeof created === 'object' ? (created as Record<string, unknown>) : undefined;
+        const doctorObj = obj && typeof obj.doctor === 'object' && obj.doctor !== null
+          ? (obj.doctor as Record<string, unknown>)
+          : undefined;
+        const appended: Appointment = {
+          id: obj && typeof obj.id === 'number' ? obj.id : Date.now(),
+          patientName: obj && typeof obj.patientName === 'string' ? obj.patientName : form.patientName,
+          doctor: doctorObj && typeof doctorObj.id === 'number' && typeof doctorObj.name === 'string'
+            ? { id: doctorObj.id, name: doctorObj.name }
+            : { id: Number(form.doctorId), name: doctorName },
+          time: obj && typeof obj.time === 'string' ? new Date(obj.time).toISOString() : new Date(form.time).toISOString(),
+          status: obj && typeof obj.status === 'string' ? (obj.status as string) : 'booked',
+        };
+        setAppointments(prev => [...prev, appended]);
+        window.alert("Successfully added appointment");
       }
       setOpen(false);
       setForm({ patientName: "", doctorId: "", time: "" });
